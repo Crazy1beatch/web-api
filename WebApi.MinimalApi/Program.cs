@@ -1,5 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WebApi.MinimalApi.Domain;
 using WebApi.MinimalApi.Models;
 
@@ -22,6 +24,11 @@ builder.Services.AddControllers(options =>
     {
         options.SuppressModelStateInvalidFilter = true;
         options.SuppressMapClientErrors = true;
+    })
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Populate;
     });
 
 
@@ -33,6 +40,7 @@ builder.Services.AddAutoMapper(cfg =>
         .ForMember(dest => dest.Login, opt => opt.MapFrom(c => c.Login))
         .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(c => c.GamesPlayed))
         .ForMember(dest => dest.CurrentGameId, opt => opt.MapFrom(c => c.CurrentGameId));
+    cfg.CreateMap<UserCreationDto, UserEntity>();
 });
 
 var app = builder.Build();
