@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -35,12 +34,11 @@ builder.Services.AddControllers(options =>
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.CreateMap<UserEntity, UserDto>()
-        .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-        .ForMember(dest => dest.FullName, opt => opt.MapFrom(c => $"{c.LastName} {c.FirstName}"))
-        .ForMember(dest => dest.Login, opt => opt.MapFrom(c => c.Login))
-        .ForMember(dest => dest.GamesPlayed, opt => opt.MapFrom(c => c.GamesPlayed))
-        .ForMember(dest => dest.CurrentGameId, opt => opt.MapFrom(c => c.CurrentGameId));
+        .ForMember(dest => dest.FullName, opt => opt.MapFrom(c => $"{c.LastName} {c.FirstName}"));
     cfg.CreateMap<UserCreationDto, UserEntity>();
+    cfg.CreateMap<UpdateUserDto, UserEntity>();
+    cfg.CreateMap<UserEntity, UpdateUserDto>();
+    cfg.CreateMap<UpdateUserDto, UserEntity>();
 });
 
 var app = builder.Build();
